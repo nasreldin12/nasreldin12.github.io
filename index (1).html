@@ -1,0 +1,1758 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BIM + AI: The Intelligent Construction Advantage | Nasreldin Yousif</title>
+<meta name="description" content="The first practitioner's playbook for BIM-AI integration. Validated across 519 real deployments and €6 billion in construction programmes. Get Chapter 1 free.">
+<meta property="og:title" content="BIM + AI: The Intelligent Construction Advantage">
+<meta property="og:description" content="519 verified projects. €6B validated. MAPE below 3.2%. The only framework that is technically rigorous and financially credible.">
+<meta property="og:type" content="website">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,400;1,600&family=JetBrains+Mono:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ══ TOKENS ══ */
+:root {
+  --ink:      #060C14;
+  --navy:     #0D1B2A;
+  --navy-md:  #1A3050;
+  --navy-lt:  #2A4A7A;
+  --gold:     #C49A00;
+  --gold-lt:  #DFB100;
+  --gold-dim: rgba(196,154,0,0.15);
+  --steel:    #7A96B4;
+  --chalk:    #EBE6DA;
+  --dim:      rgba(235,230,218,0.55);
+  --grid:     rgba(122,150,180,0.06);
+  --border:   rgba(122,150,180,0.13);
+  --gold-border: rgba(196,154,0,0.26);
+  --green:    #2ECC71;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  background: var(--navy);
+  color: var(--chalk);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── Scroll progress bar ── */
+#progress-bar {
+  position: fixed; top: 0; left: 0; z-index: 200;
+  height: 2px; width: 0%;
+  background: linear-gradient(90deg, var(--gold), var(--gold-lt));
+  transition: width 0.1s linear;
+}
+
+/* ── Blueprint grid ── */
+body::before {
+  content:''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* ── Grain ── */
+body::after {
+  content:''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.3;
+}
+
+/* ── Canvas particles ── */
+#particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.35; }
+
+.wrap { position: relative; z-index: 1; max-width: 1160px; margin: 0 auto; padding: 0 28px; }
+
+/* ══ NAV ══ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(6,12,20,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--gold-border);
+  transition: box-shadow 0.3s;
+}
+nav.scrolled { box-shadow: 0 4px 40px rgba(0,0,0,0.4); }
+.nav-inner {
+  max-width: 1160px; margin: 0 auto;
+  padding: 14px 28px;
+  display: flex; align-items: center; justify-content: space-between; gap: 20px;
+}
+.nav-brand {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px; font-weight: 700;
+  color: var(--gold); letter-spacing: 0.08em;
+  text-decoration: none; white-space: nowrap;
+}
+.nav-links {
+  display: flex; gap: 28px; list-style: none;
+  font-size: 13px; color: var(--steel);
+}
+.nav-links a { color: inherit; text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover { color: var(--chalk); }
+.nav-right { display: flex; align-items: center; gap: 14px; }
+.nav-amazon {
+  font-size: 12px; color: var(--steel);
+  text-decoration: none; white-space: nowrap;
+  transition: color 0.2s;
+}
+.nav-amazon:hover { color: var(--gold); }
+.nav-cta {
+  background: var(--gold); color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px; font-weight: 600;
+  padding: 9px 22px; border: none; border-radius: 1px;
+  cursor: pointer; text-decoration: none; white-space: nowrap;
+  transition: background 0.2s, transform 0.15s;
+}
+.nav-cta:hover { background: var(--gold-lt); transform: translateY(-1px); }
+
+/* Hamburger */
+.hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  cursor: pointer; padding: 4px; background: none; border: none;
+}
+.hamburger span {
+  display: block; width: 22px; height: 2px;
+  background: var(--chalk); transition: all 0.3s;
+}
+.hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+
+/* Mobile menu */
+.mobile-menu {
+  display: none; position: fixed;
+  top: 57px; left: 0; right: 0; z-index: 99;
+  background: rgba(6,12,20,0.97);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--gold-border);
+  padding: 20px 28px;
+  flex-direction: column; gap: 16px;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  font-size: 15px; color: var(--chalk);
+  text-decoration: none; padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+.mobile-menu a:last-child { border-bottom: none; }
+
+/* ══ TICKER STRIP ══ */
+.ticker-wrap {
+  background: var(--gold); overflow: hidden;
+  padding: 8px 0; margin-top: 57px;
+  position: relative; z-index: 1;
+}
+.ticker-track {
+  display: flex; gap: 0; white-space: nowrap;
+  animation: ticker 28s linear infinite;
+}
+.ticker-track:hover { animation-play-state: paused; }
+.ticker-item {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; font-weight: 700;
+  color: var(--ink); letter-spacing: 0.15em; text-transform: uppercase;
+  padding: 0 28px;
+}
+.ticker-sep { color: rgba(6,12,20,0.4); padding: 0 4px; }
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ══ HERO ══ */
+.hero {
+  min-height: 100vh;
+  display: flex; align-items: center;
+  padding: 60px 0 90px;
+  position: relative;
+}
+.hero::after {
+  content: '';
+  position: absolute; left: 0; right: 0; bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.15;
+}
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 90px; align-items: center; width: 100%;
+}
+
+/* Eyebrow */
+.eyebrow-row {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 24px;
+  animation: up 0.65s ease both;
+}
+.mono-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; font-weight: 700;
+  color: var(--gold); letter-spacing: 0.18em; text-transform: uppercase;
+  padding: 5px 12px; border: 1px solid var(--gold-border);
+}
+.live-dot {
+  display: inline-block; width: 7px; height: 7px;
+  background: var(--green); border-radius: 50%;
+  animation: pulse-dot 2s infinite;
+  margin-right: 4px;
+}
+@keyframes pulse-dot {
+  0%,100% { opacity: 1; box-shadow: 0 0 0 0 rgba(46,204,113,0.5); }
+  50% { opacity: 0.8; box-shadow: 0 0 0 5px rgba(46,204,113,0); }
+}
+.rule-h { width: 36px; height: 1px; background: var(--gold-border); }
+.edition-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--steel); letter-spacing: 0.12em;
+}
+
+/* H1 */
+h1.hero-h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(40px, 5.2vw, 70px);
+  font-weight: 700; line-height: 1.05;
+  color: var(--chalk); margin-bottom: 10px;
+  animation: up 0.65s 0.08s ease both;
+}
+h1.hero-h1 .gold { color: var(--gold); font-style: italic; }
+
+.hero-sub-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px; font-weight: 600; font-style: italic;
+  color: var(--steel); margin-bottom: 24px;
+  animation: up 0.65s 0.13s ease both;
+}
+.hero-desc {
+  font-size: 16px; line-height: 1.78; color: var(--dim);
+  max-width: 500px; margin-bottom: 38px;
+  animation: up 0.65s 0.18s ease both;
+}
+
+/* Stats bar */
+.stats-bar {
+  display: flex; margin-bottom: 44px;
+  border: 1px solid var(--border);
+  animation: up 0.65s 0.23s ease both;
+}
+.sbar-item {
+  flex: 1; padding: 17px 18px; text-align: center;
+  border-right: 1px solid var(--border);
+  position: relative; cursor: default;
+  transition: background 0.2s;
+}
+.sbar-item:hover { background: rgba(196,154,0,0.04); }
+.sbar-item:last-child { border-right: none; }
+.sbar-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 22px; font-weight: 700;
+  color: var(--gold); display: block; line-height: 1;
+}
+.sbar-lbl { font-size: 10px; color: var(--steel); display: block; margin-top: 5px; letter-spacing: 0.04em; }
+
+/* Hero CTAs */
+.hero-ctas {
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  animation: up 0.65s 0.28s ease both;
+}
+.btn-primary {
+  background: var(--gold); color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px; font-weight: 600;
+  padding: 15px 36px; border: none; border-radius: 1px;
+  cursor: pointer; text-decoration: none; display: inline-block;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+.btn-primary:hover {
+  background: var(--gold-lt); transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(196,154,0,0.3);
+}
+.btn-ghost {
+  font-size: 14px; color: var(--steel); text-decoration: none;
+  border-bottom: 1px solid var(--border); padding-bottom: 2px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.btn-ghost:hover { color: var(--chalk); border-color: var(--chalk); }
+
+/* ── BOOK COVER ── */
+.book-col { position: relative; animation: up 0.9s 0.32s ease both; }
+.book-outer { perspective: 900px; position: relative; }
+.book-3d {
+  width: 100%; aspect-ratio: 0.65;
+  transform: rotateY(-7deg) rotateX(1deg);
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease;
+  position: relative;
+}
+.book-3d:hover { transform: rotateY(-2deg) rotateX(0deg); }
+
+.book-face {
+  position: absolute; inset: 0;
+  background: linear-gradient(160deg, #1A3050 0%, #0D1B2A 60%, #080E17 100%);
+  border: 1px solid var(--gold-border); border-radius: 2px; overflow: hidden;
+  box-shadow: -20px 28px 80px rgba(0,0,0,0.75), -6px 8px 24px rgba(0,0,0,0.5),
+              inset 1px 0 0 rgba(255,255,255,0.03);
+}
+.book-face::before {
+  content: ''; position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(122,150,180,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(122,150,180,0.06) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+.book-face::after {
+  content: ''; position: absolute;
+  left: 0; top: 0; bottom: 0; width: 14px;
+  background: linear-gradient(90deg, rgba(196,154,0,0.55), rgba(196,154,0,0.15), transparent);
+}
+.cover-content {
+  position: absolute; inset: 0; padding: 26px 24px;
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.cover-tag-row { display: flex; align-items: center; gap: 8px; }
+.cover-dot { width: 7px; height: 7px; background: var(--gold); border-radius: 50%; flex-shrink: 0; }
+.cover-mono { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: var(--steel); letter-spacing: 0.2em; text-transform: uppercase; }
+.cover-titles { text-align: center; }
+.cv-bim { font-family: 'Cormorant Garamond', serif; font-size: 50px; font-weight: 700; color: var(--chalk); display: block; line-height: 0.95; }
+.cv-plus { font-family: 'JetBrains Mono', monospace; font-size: 24px; color: var(--gold); display: block; line-height: 0.9; margin: 4px 0; }
+.cv-ai { font-family: 'Cormorant Garamond', serif; font-size: 50px; font-weight: 700; font-style: italic; color: var(--gold); display: block; line-height: 0.95; }
+.cv-rule { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); margin: 12px 0; }
+.cv-sub { font-family: 'DM Sans', sans-serif; font-size: 9px; color: var(--steel); letter-spacing: 0.12em; text-transform: uppercase; text-align: center; }
+.cover-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.cv-stat { background: rgba(196,154,0,0.07); border: 1px solid rgba(196,154,0,0.18); padding: 7px 8px; text-align: center; }
+.cv-stat-val { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; color: var(--gold); display: block; line-height: 1; }
+.cv-stat-lbl { font-size: 8px; color: var(--steel); display: block; margin-top: 2px; letter-spacing: 0.06em; }
+.cv-corner { position: absolute; width: 12px; height: 12px; border-color: rgba(196,154,0,0.45); border-style: solid; }
+.cv-corner.tl { top: 12px; left: 12px; border-width: 1px 0 0 1px; }
+.cv-corner.tr { top: 12px; right: 12px; border-width: 1px 1px 0 0; }
+.cv-corner.bl { bottom: 12px; left: 12px; border-width: 0 0 1px 1px; }
+.cv-corner.br { bottom: 12px; right: 12px; border-width: 0 1px 1px 0; }
+.book-glow {
+  position: absolute; inset: -30px; z-index: -1; border-radius: 50%;
+  background: radial-gradient(ellipse at 40% 50%, rgba(196,154,0,0.12) 0%, transparent 65%);
+  pointer-events: none;
+}
+.launch-badge {
+  position: absolute; top: -14px; right: 16px;
+  background: var(--gold); color: var(--ink);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; font-weight: 700;
+  padding: 4px 14px; letter-spacing: 0.15em; white-space: nowrap;
+}
+
+/* Pricing pills */
+.price-row { display: flex; gap: 10px; margin-top: 20px; justify-content: center; }
+.price-pill {
+  flex: 1; padding: 13px 14px; text-align: center;
+  border: 1px solid var(--border); background: rgba(13,27,42,0.6);
+  cursor: pointer; transition: border-color 0.2s, background 0.2s, transform 0.15s;
+  text-decoration: none; display: block; position: relative;
+}
+.price-pill:hover { border-color: var(--gold-border); background: rgba(196,154,0,0.05); transform: translateY(-2px); }
+.price-pill.featured { border-color: var(--gold-border); background: rgba(196,154,0,0.05); }
+.price-pill.featured::before {
+  content: 'BEST VALUE';
+  position: absolute; top: -9px; left: 50%; transform: translateX(-50%);
+  background: var(--gold); color: var(--ink);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px; font-weight: 700; letter-spacing: 0.12em; padding: 2px 8px; white-space: nowrap;
+}
+.pill-format { font-size: 11px; color: var(--steel); display: block; margin-bottom: 4px; }
+.pill-price { font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 700; color: var(--gold); display: block; line-height: 1; }
+.pill-note { font-size: 10px; color: rgba(122,150,180,0.55); display: block; margin-top: 3px; }
+
+/* ══ COUNTDOWN ══ */
+.countdown-band {
+  padding: 52px 0;
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+}
+.cd-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--steel); text-align: center; margin-bottom: 28px; }
+.cd-grid { display: flex; justify-content: center; max-width: 500px; margin: 0 auto; }
+.cd-unit-box { flex: 1; text-align: center; border-right: 1px solid var(--border); padding: 14px 8px; }
+.cd-unit-box:last-child { border-right: none; }
+.cd-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(38px, 6vw, 58px); font-weight: 700;
+  color: var(--chalk); display: block; line-height: 1;
+  transition: color 0.25s, transform 0.1s;
+}
+.cd-num.flash { color: var(--gold); transform: scale(1.04); }
+.cd-unit-lbl { font-size: 11px; color: var(--steel); letter-spacing: 0.1em; margin-top: 6px; display: block; }
+
+/* ══ REGISTER FORM ══ */
+.register-section { padding: 80px 0; }
+.form-card {
+  max-width: 640px; margin: 0 auto;
+  border: 1px solid var(--gold-border);
+  background: rgba(6,12,20,0.8);
+  backdrop-filter: blur(14px);
+  padding: 54px 50px; position: relative;
+}
+.form-card::before {
+  content:''; position: absolute; top: -1px; left: -1px;
+  width: 24px; height: 24px;
+  border-top: 2px solid var(--gold); border-left: 2px solid var(--gold);
+}
+.form-card::after {
+  content:''; position: absolute; bottom: -1px; right: -1px;
+  width: 24px; height: 24px;
+  border-bottom: 2px solid var(--gold); border-right: 2px solid var(--gold);
+}
+.form-kicker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--gold); letter-spacing: 0.25em; text-transform: uppercase;
+  margin-bottom: 12px; display: flex; align-items: center; gap: 10px;
+}
+.form-kicker::after { content:''; flex: 1; height: 1px; background: var(--gold-border); }
+.form-h2 { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 700; color: var(--chalk); line-height: 1.25; margin-bottom: 10px; }
+.form-desc { font-size: 15px; color: var(--dim); line-height: 1.7; margin-bottom: 28px; }
+
+/* Subscriber count */
+.sub-proof {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 24px;
+}
+.sub-avatars { display: flex; }
+.sub-avatars span {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--navy-md); border: 2px solid var(--navy);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; margin-right: -8px;
+}
+.sub-text { font-size: 13px; color: var(--steel); margin-left: 16px; }
+.sub-text strong { color: var(--chalk); }
+
+/* Lead magnet */
+.magnet {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 18px; margin-bottom: 28px;
+  border: 1px solid var(--border);
+  background: rgba(26,48,80,0.4); border-radius: 1px;
+  transition: border-color 0.2s;
+}
+.magnet:hover { border-color: var(--gold-border); }
+.magnet-icon { width: 38px; height: 46px; flex-shrink: 0; background: var(--gold); color: var(--ink); display: flex; align-items: center; justify-content: center; font-size: 20px; border-radius: 1px; }
+.magnet-info { flex: 1; }
+.magnet-title-sm { font-size: 13px; font-weight: 600; color: var(--chalk); margin-bottom: 2px; }
+.magnet-desc-sm { font-size: 11px; color: var(--steel); }
+.magnet-free { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--gold); border: 1px solid var(--gold); padding: 3px 9px; white-space: nowrap; }
+
+/* Input */
+.input-row { display: flex; gap: 0; margin-bottom: 12px; }
+.name-in, .email-in {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  color: var(--chalk); font-family: 'DM Sans', sans-serif; font-size: 15px;
+  padding: 14px 18px; outline: none;
+  transition: border-color 0.2s, background 0.2s;
+  border-radius: 0; -webkit-appearance: none;
+}
+.name-in { width: 38%; border-right: none; }
+.email-in { flex: 1; border-right: none; }
+.name-in::placeholder, .email-in::placeholder { color: rgba(122,150,180,0.4); }
+.name-in:focus, .email-in:focus { border-color: rgba(196,154,0,0.5); background: rgba(196,154,0,0.03); }
+.sub-btn {
+  background: var(--gold); color: var(--ink);
+  font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+  padding: 14px 26px; border: none; cursor: pointer; white-space: nowrap;
+  transition: background 0.2s, transform 0.15s; border-radius: 0;
+}
+.sub-btn:hover { background: var(--gold-lt); transform: translateY(-1px); }
+.form-fine { font-size: 11px; color: rgba(122,150,180,0.4); }
+.form-success { display: none; text-align: center; padding: 24px 0; }
+.success-glyph { font-size: 38px; display: block; margin-bottom: 12px; }
+.success-h { font-family: 'Cormorant Garamond', serif; font-size: 24px; color: var(--gold); margin-bottom: 8px; }
+.success-p { font-size: 14px; color: var(--dim); }
+
+/* ══ PROOF STRIP ══ */
+.proof-strip { padding: 60px 0; }
+.proof-inner {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  border: 1px solid var(--gold-border);
+}
+.proof-cell {
+  padding: 28px 20px; text-align: center;
+  border-right: 1px solid rgba(196,154,0,0.13);
+  transition: background 0.2s;
+}
+.proof-cell:hover { background: rgba(196,154,0,0.03); }
+.proof-cell:last-child { border-right: none; }
+.proof-val { font-family: 'JetBrains Mono', monospace; font-size: 30px; font-weight: 700; color: var(--gold); display: block; line-height: 1; }
+.proof-lbl { font-size: 12px; color: var(--steel); margin-top: 6px; display: block; }
+
+/* ══ TRUST LOGOS ══ */
+.trust-strip { padding: 40px 0 60px; text-align: center; }
+.trust-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(122,150,180,0.4); letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 22px; display: block; }
+.trust-logos { display: flex; align-items: center; justify-content: center; gap: 36px; flex-wrap: wrap; }
+.trust-logo {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px; color: rgba(122,150,180,0.35);
+  letter-spacing: 0.1em; text-transform: uppercase;
+  border: 1px solid rgba(122,150,180,0.12);
+  padding: 8px 18px; transition: color 0.2s, border-color 0.2s;
+}
+.trust-logo:hover { color: var(--steel); border-color: var(--border); }
+
+/* ══ FEATURES ══ */
+.features-section { padding: 80px 0; }
+.sec-header { text-align: center; margin-bottom: 56px; }
+.sec-kicker { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--gold); letter-spacing: 0.3em; text-transform: uppercase; display: block; margin-bottom: 16px; }
+.sec-h2 { font-family: 'Cormorant Garamond', serif; font-size: 38px; font-weight: 700; color: var(--chalk); line-height: 1.15; }
+.feat-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+.feat-cell {
+  background: var(--navy); padding: 32px 28px;
+  position: relative; transition: background 0.25s, transform 0.2s;
+  cursor: default;
+}
+.feat-cell:hover { background: rgba(26,48,80,0.8); transform: translateY(-2px); z-index: 1; }
+.feat-cell::after {
+  content: ''; position: absolute;
+  bottom: 0; left: 0; right: 0; height: 2px;
+  background: var(--gold); transform: scaleX(0);
+  transition: transform 0.3s ease; transform-origin: left;
+}
+.feat-cell:hover::after { transform: scaleX(1); }
+.feat-num { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(196,154,0,0.3); letter-spacing: 0.2em; margin-bottom: 14px; }
+.feat-icon { font-size: 26px; display: block; margin-bottom: 14px; }
+.feat-title { font-size: 16px; font-weight: 600; color: var(--chalk); margin-bottom: 10px; line-height: 1.3; }
+.feat-desc { font-size: 13px; color: var(--dim); line-height: 1.78; }
+
+/* ══ TESTIMONIALS ══ */
+.testi-section { padding: 80px 0; }
+.testi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+.testi-card {
+  padding: 28px 26px; border: 1px solid var(--border);
+  background: rgba(13,27,42,0.5); position: relative;
+  transition: border-color 0.25s, transform 0.2s, background 0.25s;
+}
+.testi-card:hover { border-color: var(--gold-border); transform: translateY(-3px); background: rgba(26,48,80,0.4); }
+.testi-card::before {
+  content: '"'; position: absolute; top: 12px; left: 18px;
+  font-family: 'Cormorant Garamond', serif; font-size: 60px; color: rgba(196,154,0,0.1);
+  line-height: 1; pointer-events: none;
+}
+.testi-stars { color: var(--gold); font-size: 13px; letter-spacing: 2px; margin-bottom: 14px; }
+.testi-quote { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-style: italic; font-weight: 600; color: var(--chalk); line-height: 1.65; margin-bottom: 20px; }
+.testi-rule { width: 30px; height: 1px; background: var(--gold); margin-bottom: 14px; opacity: 0.4; }
+.testi-name { font-size: 13px; font-weight: 600; color: var(--chalk); }
+.testi-role { font-size: 12px; color: var(--steel); margin-top: 2px; }
+
+/* ══ PRICING ══ */
+.pricing-section { padding: 80px 0; }
+.pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; max-width: 920px; margin: 0 auto; }
+.pricing-card {
+  border: 1px solid var(--border); padding: 32px 28px;
+  position: relative; transition: border-color 0.25s, background 0.25s, transform 0.2s;
+  background: rgba(13,27,42,0.4);
+}
+.pricing-card:hover { background: rgba(26,48,80,0.45); border-color: var(--gold-border); transform: translateY(-3px); }
+.pricing-card.featured { border-color: var(--gold-border); background: rgba(196,154,0,0.04); }
+.featured-label {
+  position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+  background: var(--gold); color: var(--ink);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; font-weight: 700; letter-spacing: 0.15em; padding: 3px 12px; white-space: nowrap;
+}
+.pricing-format { font-size: 11px; color: var(--steel); margin-bottom: 10px; letter-spacing: 0.06em; text-transform: uppercase; }
+.pricing-price { font-family: 'JetBrains Mono', monospace; font-size: 36px; font-weight: 700; color: var(--gold); line-height: 1; margin-bottom: 6px; }
+.pricing-price span { font-size: 18px; vertical-align: super; }
+.pricing-note { font-size: 12px; color: var(--steel); margin-bottom: 22px; line-height: 1.5; }
+.pricing-list { list-style: none; margin-bottom: 28px; }
+.pricing-list li { font-size: 13px; color: var(--dim); padding: 7px 0; border-bottom: 1px solid rgba(122,150,180,0.07); display: flex; align-items: flex-start; gap: 8px; }
+.pricing-list li::before { content: '✓'; color: var(--gold); flex-shrink: 0; font-size: 12px; margin-top: 1px; }
+.pricing-btn {
+  display: block; width: 100%;
+  background: transparent; color: var(--gold);
+  border: 1px solid var(--gold-border);
+  font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+  padding: 13px; cursor: pointer; text-align: center;
+  text-decoration: none; transition: all 0.2s;
+}
+.pricing-btn:hover, .pricing-card.featured .pricing-btn { background: var(--gold); color: var(--ink); }
+
+/* ══ AUTHOR ══ */
+.author-section { padding: 80px 0; }
+.author-card {
+  max-width: 860px; margin: 0 auto;
+  display: grid; grid-template-columns: 180px 1fr;
+  gap: 48px; align-items: start;
+  padding: 40px; border: 1px solid var(--border); position: relative;
+}
+.author-card::after {
+  content:''; position: absolute; top: -1px; right: -1px;
+  width: 28px; height: 28px;
+  border-top: 2px solid var(--gold); border-right: 2px solid var(--gold);
+}
+.author-avatar {
+  width: 180px; height: 180px;
+  background: linear-gradient(145deg, var(--navy-md), var(--navy-lt));
+  border: 1px solid var(--gold-border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 60px; position: relative; overflow: hidden; flex-shrink: 0;
+}
+.author-avatar::after { content:''; position: absolute; inset: 0; background: linear-gradient(145deg, rgba(196,154,0,0.1), transparent); }
+.author-kicker { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--gold); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 8px; }
+.author-name { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 700; color: var(--chalk); margin-bottom: 4px; }
+.author-role { font-size: 13px; color: var(--steel); margin-bottom: 18px; }
+.author-bio { font-size: 14px; color: var(--dim); line-height: 1.85; }
+.author-links { display: flex; gap: 12px; margin-top: 18px; }
+.author-link {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--steel); text-decoration: none;
+  border: 1px solid var(--border); padding: 5px 14px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.author-link:hover { color: var(--gold); border-color: var(--gold-border); }
+
+/* ══ FAQ ══ */
+.faq-section { padding: 80px 0; }
+.faq-grid { max-width: 740px; margin: 0 auto; display: flex; flex-direction: column; gap: 0; border: 1px solid var(--border); }
+.faq-item { border-bottom: 1px solid var(--border); }
+.faq-item:last-child { border-bottom: none; }
+.faq-q {
+  width: 100%; background: none; border: none; text-align: left;
+  padding: 20px 24px; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500;
+  color: var(--chalk); transition: background 0.2s;
+}
+.faq-q:hover { background: rgba(196,154,0,0.03); }
+.faq-icon { font-family: 'JetBrains Mono', monospace; font-size: 18px; color: var(--gold); flex-shrink: 0; transition: transform 0.3s; }
+.faq-item.open .faq-icon { transform: rotate(45deg); }
+.faq-a {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.35s ease, padding 0.35s ease;
+  padding: 0 24px;
+}
+.faq-item.open .faq-a { max-height: 300px; padding: 0 24px 20px; }
+.faq-a p { font-size: 14px; color: var(--dim); line-height: 1.8; }
+
+/* ══ FOOTER CTA ══ */
+.footer-cta-section {
+  padding: 80px 0; text-align: center;
+  background: linear-gradient(180deg, transparent, rgba(26,48,80,0.2));
+}
+.ftcta-h { font-family: 'Cormorant Garamond', serif; font-size: clamp(26px,4vw,46px); font-weight: 700; color: var(--chalk); line-height: 1.2; margin-bottom: 14px; }
+.ftcta-h em { font-style: italic; color: var(--gold); }
+.ftcta-sub { font-size: 16px; color: var(--dim); margin-bottom: 36px; }
+.ft-form { display: flex; max-width: 460px; margin: 0 auto 14px; }
+.ft-form .email-in { flex: 1; border-right: none; }
+.ft-note { font-size: 12px; color: rgba(122,150,180,0.35); }
+
+/* ══ FOOTER ══ */
+footer { border-top: 1px solid var(--border); padding: 26px 28px; }
+.foot-inner { max-width: 1160px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.foot-brand { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--steel); }
+.foot-links { display: flex; gap: 20px; font-size: 12px; color: var(--steel); list-style: none; }
+.foot-links a { color: inherit; text-decoration: none; transition: color 0.2s; }
+.foot-links a:hover { color: var(--chalk); }
+.foot-copy { font-size: 12px; color: rgba(122,150,180,0.35); }
+
+/* ══ STICKY BUY BUTTON (old - hidden) ══ */
+.sticky-buy { display: none; }
+
+/* ══ AMAZON HERO STRIP ══ */
+.amz-hero-strip {
+  background: linear-gradient(90deg, rgba(196,154,0,0.06) 0%, rgba(196,154,0,0.12) 50%, rgba(196,154,0,0.06) 100%);
+  border-top: 1px solid var(--gold-border);
+  border-bottom: 1px solid var(--gold-border);
+  padding: 28px 0;
+  position: relative; z-index: 1;
+}
+.amz-hero-inner {
+  max-width: 1160px; margin: 0 auto; padding: 0 28px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 24px; flex-wrap: wrap;
+}
+.amz-hero-left { display: flex; align-items: center; gap: 18px; }
+.amz-logo-badge {
+  background: #FF9900; color: #000;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px; font-weight: 700;
+  padding: 6px 14px; letter-spacing: 0.1em;
+  white-space: nowrap; border-radius: 1px;
+}
+.amz-hero-text { }
+.amz-hero-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px; color: var(--gold); letter-spacing: 0.15em;
+  text-transform: uppercase; margin-bottom: 3px;
+}
+.amz-hero-sub { font-size: 13px; color: var(--dim); }
+.amz-hero-right { display: flex; gap: 10px; align-items: center; }
+.amz-btn-kindle {
+  background: #FF9900; color: #000;
+  font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 700;
+  padding: 12px 28px; text-decoration: none; white-space: nowrap;
+  border-radius: 1px; transition: background 0.2s, transform 0.15s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.amz-btn-kindle:hover { background: #e68a00; transform: translateY(-1px); }
+.amz-btn-paper {
+  background: transparent; color: var(--chalk);
+  font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+  padding: 12px 24px; text-decoration: none; white-space: nowrap;
+  border: 1px solid var(--border); border-radius: 1px;
+  transition: border-color 0.2s, color 0.2s, transform 0.15s;
+}
+.amz-btn-paper:hover { border-color: var(--gold-border); color: var(--gold); transform: translateY(-1px); }
+.amz-ratings {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--steel);
+  display: flex; align-items: center; gap: 6px;
+}
+.amz-stars-sm { color: #FF9900; letter-spacing: 1px; font-size: 12px; }
+
+/* ══ AMAZON BUY SECTION ══ */
+.amz-section {
+  padding: 80px 0;
+  background: linear-gradient(135deg, rgba(13,27,42,0.95) 0%, rgba(26,48,80,0.3) 100%);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  position: relative; overflow: hidden;
+}
+/* diagonal accent */
+.amz-section::before {
+  content: '';
+  position: absolute; top: 0; right: 0;
+  width: 50%; height: 100%;
+  background: linear-gradient(135deg, transparent 0%, rgba(196,154,0,0.03) 100%);
+  pointer-events: none;
+}
+.amz-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 72px; align-items: center;
+}
+.amz-left { }
+.amz-kicker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: #FF9900; letter-spacing: 0.25em; text-transform: uppercase;
+  margin-bottom: 16px; display: flex; align-items: center; gap: 10px;
+}
+.amz-kicker::before { content: ''; width: 24px; height: 1px; background: #FF9900; opacity: 0.5; }
+.amz-h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 36px; font-weight: 700; color: var(--chalk);
+  line-height: 1.15; margin-bottom: 16px;
+}
+.amz-h2 em { color: var(--gold); font-style: italic; }
+.amz-desc { font-size: 15px; color: var(--dim); line-height: 1.75; margin-bottom: 28px; }
+
+/* Review stars */
+.amz-review-row {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 28px;
+}
+.amz-stars { color: #FF9900; font-size: 18px; letter-spacing: 2px; }
+.amz-review-text { font-size: 13px; color: var(--steel); }
+.amz-review-text strong { color: var(--chalk); }
+
+.amz-badges {
+  display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 32px;
+}
+.amz-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--steel);
+  border: 1px solid var(--border); padding: 5px 12px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+}
+.amz-badge.gold { color: var(--gold); border-color: var(--gold-border); }
+
+/* Buy buttons */
+.amz-btns { display: flex; flex-direction: column; gap: 10px; }
+.amz-buy-main {
+  background: #FF9900; color: #000;
+  font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 700;
+  padding: 17px 36px; text-decoration: none;
+  border-radius: 1px; transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+}
+.amz-buy-main:hover {
+  background: #e68a00; transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(255,153,0,0.3);
+}
+.amz-buy-main-price {
+  font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 700;
+}
+.amz-buy-paper {
+  background: transparent; color: var(--chalk);
+  font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+  padding: 14px 36px; text-decoration: none;
+  border: 1px solid var(--border); border-radius: 1px;
+  transition: all 0.2s; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.amz-buy-paper:hover { border-color: var(--gold-border); color: var(--gold); }
+.amz-fine { font-size: 11px; color: rgba(122,150,180,0.4); margin-top: 10px; }
+
+/* Right: Kindle preview card */
+.amz-right { position: relative; }
+.amz-card {
+  background: rgba(6,12,20,0.8); backdrop-filter: blur(10px);
+  border: 1px solid var(--gold-border); padding: 36px 32px;
+  position: relative;
+}
+.amz-card::before {
+  content: ''; position: absolute; top: -1px; right: -1px;
+  width: 20px; height: 20px;
+  border-top: 2px solid var(--gold); border-right: 2px solid var(--gold);
+}
+.amz-card::after {
+  content: ''; position: absolute; bottom: -1px; left: -1px;
+  width: 20px; height: 20px;
+  border-bottom: 2px solid var(--gold); border-left: 2px solid var(--gold);
+}
+.amz-card-header {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 20px;
+}
+.amz-card-tag {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  color: #FF9900; letter-spacing: 0.2em; text-transform: uppercase;
+}
+.amz-ku-badge {
+  background: rgba(255,153,0,0.1); color: #FF9900;
+  font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  border: 1px solid rgba(255,153,0,0.3); padding: 3px 8px;
+  letter-spacing: 0.1em;
+}
+.amz-editions {
+  display: flex; flex-direction: column; gap: 1px; margin-bottom: 20px;
+}
+.amz-edition-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 16px; background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border); transition: border-color 0.2s, background 0.2s;
+  text-decoration: none;
+}
+.amz-edition-row:hover { border-color: var(--gold-border); background: rgba(196,154,0,0.04); }
+.amz-edition-row.active { border-color: #FF9900; background: rgba(255,153,0,0.06); }
+.amz-edition-left { display: flex; align-items: center; gap: 10px; }
+.amz-edition-icon { font-size: 18px; }
+.amz-edition-name { font-size: 13px; font-weight: 600; color: var(--chalk); display: block; }
+.amz-edition-note { font-size: 11px; color: var(--steel); }
+.amz-edition-price {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 18px; font-weight: 700; color: var(--gold);
+}
+.amz-edition-row.active .amz-edition-price { color: #FF9900; }
+.amz-card-cta {
+  background: #FF9900; color: #000;
+  font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 700;
+  padding: 14px; border: none; width: 100%; cursor: pointer;
+  text-align: center; text-decoration: none; display: block;
+  transition: background 0.2s, transform 0.15s;
+}
+.amz-card-cta:hover { background: #e68a00; transform: translateY(-1px); }
+.amz-card-note {
+  font-size: 11px; color: rgba(122,150,180,0.4);
+  text-align: center; margin-top: 10px;
+}
+
+/* ══ BOTTOM AMAZON BAR ══ */
+.amz-bottom-bar {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 95;
+  background: rgba(6,12,20,0.97); backdrop-filter: blur(16px);
+  border-top: 1px solid var(--gold-border);
+  padding: 14px 28px;
+  transform: translateY(100%);
+  transition: transform 0.4s ease;
+}
+.amz-bottom-bar.visible { transform: translateY(0); }
+.amz-bar-inner {
+  max-width: 1160px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 20px; flex-wrap: wrap;
+}
+.amz-bar-info { display: flex; align-items: center; gap: 14px; }
+.amz-bar-cover {
+  width: 38px; height: 50px;
+  background: linear-gradient(145deg, var(--navy-md), var(--navy));
+  border: 1px solid var(--gold-border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; flex-shrink: 0;
+  font-family: 'Cormorant Garamond', serif; font-weight: 700; color: var(--gold);
+}
+.amz-bar-text { }
+.amz-bar-title {
+  font-size: 13px; font-weight: 600; color: var(--chalk);
+  display: block; margin-bottom: 2px;
+}
+.amz-bar-sub { font-size: 11px; color: var(--steel); }
+.amz-bar-stars { color: #FF9900; font-size: 11px; letter-spacing: 1px; }
+.amz-bar-actions { display: flex; gap: 8px; align-items: center; }
+.amz-bar-price {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 22px; font-weight: 700; color: var(--gold);
+}
+.amz-bar-kindle {
+  background: #FF9900; color: #000;
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 700;
+  padding: 11px 24px; text-decoration: none; white-space: nowrap;
+  border-radius: 1px; transition: background 0.2s, transform 0.15s;
+}
+.amz-bar-kindle:hover { background: #e68a00; transform: translateY(-1px); }
+.amz-bar-paper {
+  background: transparent; color: var(--chalk);
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600;
+  padding: 10px 18px; text-decoration: none; white-space: nowrap;
+  border: 1px solid var(--border); border-radius: 1px;
+  transition: border-color 0.2s, color 0.2s;
+}
+.amz-bar-paper:hover { border-color: var(--gold-border); color: var(--gold); }
+.amz-bar-close {
+  background: none; border: none; color: var(--steel);
+  cursor: pointer; font-size: 18px; padding: 4px 8px;
+  transition: color 0.2s; flex-shrink: 0;
+}
+.amz-bar-close:hover { color: var(--chalk); }
+
+@media (max-width: 900px) {
+  .amz-inner { grid-template-columns: 1fr; gap: 40px; }
+  .amz-hero-inner { flex-direction: column; align-items: flex-start; }
+}
+@media (max-width: 600px) {
+  .amz-hero-right { flex-wrap: wrap; }
+  .amz-bar-info { flex: 1; min-width: 0; }
+  .amz-bar-actions { gap: 6px; }
+  .amz-bar-paper { display: none; }
+  .amz-bottom-bar { padding: 12px 16px; }
+}
+
+/* ══ ANIMATIONS ══ */
+@keyframes up {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.65s ease, transform 0.65s ease; }
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+/* ══ RESPONSIVE ══ */
+@media (max-width: 900px) {
+  .hero-inner { grid-template-columns: 1fr; gap: 56px; }
+  .book-col { max-width: 300px; margin: 0 auto; }
+  .feat-grid { grid-template-columns: 1fr 1fr; }
+  .testi-grid { grid-template-columns: 1fr; gap: 14px; }
+  .pricing-grid { grid-template-columns: 1fr; max-width: 420px; }
+  .author-card { grid-template-columns: 1fr; text-align: center; }
+  .author-avatar { margin: 0 auto; }
+  .author-card::after { display: none; }
+  .author-links { justify-content: center; }
+  .proof-inner { grid-template-columns: repeat(2,1fr); }
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  .nav-amazon { display: none; }
+}
+@media (max-width: 600px) {
+  .stats-bar { flex-direction: column; }
+  .sbar-item { border-right: none; border-bottom: 1px solid var(--border); }
+  .feat-grid { grid-template-columns: 1fr; }
+  .proof-inner { grid-template-columns: 1fr 1fr; }
+  .input-row, .ft-form { flex-direction: column; }
+  .name-in { width: 100%; border-right: 1px solid var(--border) !important; border-bottom: none; }
+  .email-in { border-right: 1px solid var(--border) !important; }
+  .form-card { padding: 32px 22px; }
+  .price-row { flex-direction: column; }
+  .hero-ctas { flex-direction: column; align-items: flex-start; }
+  .trust-logos { gap: 12px; }
+  .sticky-buy { bottom: 16px; right: 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Progress bar -->
+<div id="progress-bar"></div>
+
+<!-- Particle canvas -->
+<canvas id="particles"></canvas>
+
+<!-- ══ NAV ══ -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-brand">BIM + AI</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#features">Contents</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#author">Author</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="https://www.amazon.com/dp/B0GR783N17" target="_blank" class="nav-amazon">☞ Amazon</a>
+      <a href="#register" class="nav-cta">Free Chapter →</a>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#about" onclick="closeMenu()">About</a>
+  <a href="#features" onclick="closeMenu()">What's Inside</a>
+  <a href="#pricing" onclick="closeMenu()">Pricing</a>
+  <a href="#author" onclick="closeMenu()">Author</a>
+  <a href="#faq" onclick="closeMenu()">FAQ</a>
+  <a href="#register" onclick="closeMenu()" style="color:var(--gold);font-weight:600;">Get Free Chapter →</a>
+</div>
+
+<!-- ══ TICKER ══ -->
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <span class="ticker-item">519 Verified Projects <span class="ticker-sep">·</span></span>
+    <span class="ticker-item">€6B Validated Portfolio <span class="ticker-sep">·</span></span>
+    <span class="ticker-item">MAPE Below 3.2% <span class="ticker-sep">·</span></span>
+    <span class="ticker-item">IRR 31–47% <span class="ticker-sep">·</span></span>
+    <span class="ticker-item">EU AI Act Compliant <span class="ticker-sep">·</span></span>
+    <span class="ticker-item">ISO 19650 Aligned <span class="ticker-sep">·</span></span>
+    <span class="ticker-item">Now Live on Amazon <span class="ticker-sep">·</span></span>
+    <span class="ticker-item">Kindle Unlimited Eligible <span class="ticker-sep">·</span></span>
+    <!-- duplicate for seamless loop -->
+    <span class="ticker-item">519 Verified Projects <span class="ticker-sep">·</span></span>
+    <span class="ticker-item">€6B Validated Portfolio <span class="ticker-sep">·</span></span>
+    <span class="ticker-item">MAPE Below 3.2% <span class="ticker-sep">·</span></span>
+    <span class="ticker-item">IRR 31–47% <span class="ticker-sep">·</span></span>
+    <span class="ticker-item">EU AI Act Compliant <span class="ticker-sep">·</span></span>
+    <span class="ticker-item">ISO 19650 Aligned <span class="ticker-sep">·</span></span>
+    <span class="ticker-item">Now Live on Amazon <span class="ticker-sep">·</span></span>
+    <span class="ticker-item">Kindle Unlimited Eligible <span class="ticker-sep">·</span></span>
+  </div>
+</div>
+
+<!-- ══ HERO ══ -->
+<section class="hero" id="about">
+  <div class="wrap">
+    <div class="hero-inner">
+
+      <div>
+        <div class="eyebrow-row">
+          <span class="mono-tag"><span class="live-dot"></span>Now Live</span>
+          <span class="rule-h"></span>
+          <span class="edition-tag">Gold Standard Edition · 2026</span>
+        </div>
+
+        <h1 class="hero-h1">
+          The Construction Industry<br>
+          Has the Data.<br>
+          <span class="gold">You Need the Framework.</span>
+        </h1>
+
+        <p class="hero-sub-title">BIM + AI: The Intelligent Construction Advantage</p>
+
+        <p class="hero-desc">
+          Validated across 519 real deployments and €6 billion in construction programmes —
+          the only practitioner's playbook that bridges technically rigorous AI implementation
+          with financially credible ROI frameworks. EU AI Act compliant. Ready to deploy today.
+        </p>
+
+        <div class="stats-bar">
+          <div class="sbar-item">
+            <span class="sbar-val" data-count="519" data-suffix="">519</span>
+            <span class="sbar-lbl">Verified Projects</span>
+          </div>
+          <div class="sbar-item">
+            <span class="sbar-val">&lt;3.2%</span>
+            <span class="sbar-lbl">MAPE Achieved</span>
+          </div>
+          <div class="sbar-item">
+            <span class="sbar-val">€6B</span>
+            <span class="sbar-lbl">Validated Portfolio</span>
+          </div>
+          <div class="sbar-item">
+            <span class="sbar-val">47%</span>
+            <span class="sbar-lbl">Peak IRR</span>
+          </div>
+        </div>
+
+        <div class="hero-ctas">
+          <a href="#register" class="btn-primary">Get Free Chapter — No Credit Card</a>
+          <a href="#pricing" class="btn-ghost">See pricing →</a>
+        </div>
+      </div>
+
+      <!-- Book -->
+      <div class="book-col">
+        <div class="launch-badge">LIVE ON AMAZON NOW</div>
+        <div class="book-outer">
+          <div class="book-3d">
+            <div class="book-face">
+              <div class="cv-corner tl"></div>
+              <div class="cv-corner tr"></div>
+              <div class="cv-corner bl"></div>
+              <div class="cv-corner br"></div>
+              <div class="cover-content">
+                <div class="cover-tag-row">
+                  <div class="cover-dot"></div>
+                  <span class="cover-mono">A Practitioner's Playbook · 2025–2030</span>
+                </div>
+                <div class="cover-titles">
+                  <span class="cv-bim">BIM</span>
+                  <span class="cv-plus">+</span>
+                  <span class="cv-ai">AI</span>
+                  <div class="cv-rule"></div>
+                  <span class="cv-sub">The Intelligent Construction Advantage</span>
+                </div>
+                <div>
+                  <div class="cover-stats">
+                    <div class="cv-stat"><span class="cv-stat-val">519</span><span class="cv-stat-lbl">Projects</span></div>
+                    <div class="cv-stat"><span class="cv-stat-val">&lt;3.2%</span><span class="cv-stat-lbl">MAPE</span></div>
+                    <div class="cv-stat"><span class="cv-stat-val">€6B</span><span class="cv-stat-lbl">Validated</span></div>
+                    <div class="cv-stat"><span class="cv-stat-val">47%</span><span class="cv-stat-lbl">IRR</span></div>
+                  </div>
+                  <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center;">
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--dim);letter-spacing:0.1em;">NASRELDIN YOUSIF</span>
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--gold);border:1px solid var(--gold);padding:3px 8px;">GOLD ED.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="book-glow"></div>
+        </div>
+
+        <div class="price-row">
+          <a href="https://www.amazon.com/dp/B0GR783N17" target="_blank" class="price-pill featured">
+            <span class="pill-format">📱 Kindle</span>
+            <span class="pill-price">$9.99</span>
+            <span class="pill-note">Instant download</span>
+          </a>
+          <a href="https://www.amazon.com/dp/B0GR783N17" target="_blank" class="price-pill">
+            <span class="pill-format">📖 Paperback</span>
+            <span class="pill-price">$39.99</span>
+            <span class="pill-note">Ships worldwide</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ AMAZON HERO STRIP ══ -->
+<div class="amz-hero-strip">
+  <div class="amz-hero-inner">
+    <div class="amz-hero-left">
+      <span class="amz-logo-badge">amazon</span>
+      <div class="amz-hero-text">
+        <div class="amz-hero-title">Available Now on Amazon</div>
+        <div class="amz-hero-sub">Kindle · Paperback · Kindle Unlimited · Ships Worldwide</div>
+      </div>
+      <div class="amz-ratings">
+        <span class="amz-stars-sm">★★★★★</span>
+        <span>5.0 · Verified Readers</span>
+      </div>
+    </div>
+    <div class="amz-hero-right">
+      <a href="https://www.amazon.com/dp/B0GR783N17" target="_blank" class="amz-btn-kindle">
+        📱 Kindle — $9.99
+      </a>
+      <a href="https://www.amazon.com/dp/B0GR783N17" target="_blank" class="amz-btn-paper">
+        📖 Paperback — $39.99
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ══ COUNTDOWN ══ -->
+<section class="countdown-band">
+  <div class="wrap">
+    <p class="cd-label">Early Bird 40% discount expires in</p>
+    <div class="cd-grid">
+      <div class="cd-unit-box"><span class="cd-num" id="cd-d">00</span><span class="cd-unit-lbl">Days</span></div>
+      <div class="cd-unit-box"><span class="cd-num" id="cd-h">00</span><span class="cd-unit-lbl">Hours</span></div>
+      <div class="cd-unit-box"><span class="cd-num" id="cd-m">00</span><span class="cd-unit-lbl">Minutes</span></div>
+      <div class="cd-unit-box"><span class="cd-num" id="cd-s">00</span><span class="cd-unit-lbl">Seconds</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ REGISTER ══ -->
+<section class="register-section" id="register">
+  <div class="wrap">
+    <div class="form-card reveal">
+      <p class="form-kicker">Early Access Registration</p>
+      <h2 class="form-h2">Get the First Chapter. Free.</h2>
+      <p class="form-desc">
+        Register now and we'll send you Chapter 1 immediately — plus your exclusive 40% Early Bird
+        discount. No credit card. No spam. One click to unsubscribe.
+      </p>
+
+      <div class="sub-proof">
+        <div class="sub-avatars">
+          <span>👷</span><span>🏗</span><span>📐</span><span>💼</span>
+        </div>
+        <span class="sub-text">Join <strong>3,000+</strong> practitioners already registered</span>
+      </div>
+
+      <div class="magnet">
+        <div class="magnet-icon">📘</div>
+        <div class="magnet-info">
+          <div class="magnet-title-sm">Chapter 1: Why 97% of BIM Programmes Fail to Deliver AI Value</div>
+          <div class="magnet-desc-sm">PDF · 14 pages · 18-min read · Completely free</div>
+        </div>
+        <span class="magnet-free">FREE</span>
+      </div>
+
+      <form id="hero-form" onsubmit="submitForm(event,'hero-form','form-ok')">
+        <div class="input-row">
+          <input type="text" class="name-in" placeholder="First name" autocomplete="given-name">
+          <input type="email" id="hero-email" class="email-in" placeholder="your@email.com" required autocomplete="email">
+          <button type="submit" class="sub-btn">Send Chapter →</button>
+        </div>
+        <p class="form-fine">🔒 No spam, ever. Unsubscribe in one click.</p>
+      </form>
+
+      <div class="form-success" id="form-ok">
+        <span class="success-glyph">✅</span>
+        <div class="success-h">Chapter on its way!</div>
+        <p class="success-p">Check your inbox — Chapter 1 is heading to you now.<br>You'll receive your Early Bird discount shortly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PROOF STRIP ══ -->
+<section class="proof-strip reveal">
+  <div class="wrap">
+    <div class="proof-inner">
+      <div class="proof-cell">
+        <span class="proof-val">519</span>
+        <span class="proof-lbl">Verified deployments across 4 regions</span>
+      </div>
+      <div class="proof-cell">
+        <span class="proof-val">&lt;3.2%</span>
+        <span class="proof-lbl">MAPE vs 15–30% industry standard</span>
+      </div>
+      <div class="proof-cell">
+        <span class="proof-val">31–47%</span>
+        <span class="proof-lbl">IRR range across programme types</span>
+      </div>
+      <div class="proof-cell">
+        <span class="proof-val">14 mo.</span>
+        <span class="proof-lbl">Average investment payback period</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TRUST STRIP ══ -->
+<section class="trust-strip reveal">
+  <div class="wrap">
+    <span class="trust-label">Aligned with industry standards</span>
+    <div class="trust-logos">
+      <span class="trust-logo">ISO 19650</span>
+      <span class="trust-logo">EU AI Act</span>
+      <span class="trust-logo">buildingSMART</span>
+      <span class="trust-logo">IFC 4.3</span>
+      <span class="trust-logo">RIBA Plan of Work</span>
+      <span class="trust-logo">Kindle Unlimited</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FEATURES ══ -->
+<section class="features-section" id="features">
+  <div class="wrap">
+    <div class="sec-header reveal">
+      <span class="sec-kicker">What's inside</span>
+      <h2 class="sec-h2">Tools you deploy on Monday.<br>Not theories for next year.</h2>
+    </div>
+    <div class="feat-grid">
+      <div class="feat-cell reveal">
+        <p class="feat-num">01 —</p>
+        <span class="feat-icon">🧠</span>
+        <h3 class="feat-title">Production-Ready Python Models</h3>
+        <p class="feat-desc">LightGBM and XGBoost cost estimation frameworks tested across 519 live projects — clean, documented, and ready to plug into your data pipeline today.</p>
+      </div>
+      <div class="feat-cell reveal" style="transition-delay:.08s">
+        <p class="feat-num">02 —</p>
+        <span class="feat-icon">📊</span>
+        <h3 class="feat-title">Verified ROI Framework</h3>
+        <p class="feat-desc">Calculate your programme's expected return before committing budget. IRR benchmarks, NPV models, and payback calculators derived from real completed projects.</p>
+      </div>
+      <div class="feat-cell reveal" style="transition-delay:.16s">
+        <p class="feat-num">03 —</p>
+        <span class="feat-icon">🏗️</span>
+        <h3 class="feat-title">519 Field Case Studies</h3>
+        <p class="feat-desc">North America, Europe, Middle East, Asia. Real outcomes. Real numbers. Audited financial results — not hypothetical scenarios or sponsored success stories.</p>
+      </div>
+      <div class="feat-cell reveal" style="transition-delay:.08s">
+        <p class="feat-num">04 —</p>
+        <span class="feat-icon">⚖️</span>
+        <h3 class="feat-title">EU AI Act Compliance</h3>
+        <p class="feat-desc">The most comprehensive treatment of EU AI Act compliance in any construction publication. Practical frameworks for AEC firms operating anywhere in Europe.</p>
+      </div>
+      <div class="feat-cell reveal" style="transition-delay:.16s">
+        <p class="feat-num">05 —</p>
+        <span class="feat-icon">💼</span>
+        <h3 class="feat-title">M&A Valuation Intelligence</h3>
+        <p class="feat-desc">How investors value AI-first construction enterprises. The 11× vs 8× EBITDA multiple gap — and exactly what creates it. Essential for exits and board-level strategy.</p>
+      </div>
+      <div class="feat-cell reveal" style="transition-delay:.24s">
+        <p class="feat-num">06 —</p>
+        <span class="feat-icon">🔮</span>
+        <h3 class="feat-title">2025–2030 Technology Roadmap</h3>
+        <p class="feat-desc">Which emerging AI capabilities matter for construction? Where should you invest now? A forward-looking strategic map built on current deployment data — not speculation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ AMAZON BUY SECTION ══ -->
+<section class="amz-section" id="buy">
+  <div class="wrap">
+    <div class="amz-inner">
+
+      <!-- Left: Copy -->
+      <div class="amz-left reveal">
+        <p class="amz-kicker">Available on Amazon</p>
+        <h2 class="amz-h2">
+          The Framework That Turns<br>
+          Data into <em>Decisions</em>
+        </h2>
+        <p class="amz-desc">
+          211 pages. 519 verified projects. Production-ready Python frameworks.
+          Available instantly on Kindle or shipped worldwide in paperback.
+          Enrolled in Kindle Unlimited — read free with your subscription.
+        </p>
+
+        <div class="amz-review-row">
+          <span class="amz-stars">★★★★★</span>
+          <span class="amz-review-text"><strong>"The cost prediction framework alone is worth the price."</strong> — Dr. Sarah Mitchell, Tier 1 Contractor, UK</span>
+        </div>
+
+        <div class="amz-badges">
+          <span class="amz-badge gold">✓ Kindle Unlimited</span>
+          <span class="amz-badge gold">✓ EU AI Act Compliant</span>
+          <span class="amz-badge">ISO 19650 Aligned</span>
+          <span class="amz-badge">Ships Worldwide</span>
+          <span class="amz-badge">211 Pages</span>
+        </div>
+
+        <div class="amz-btns">
+          <a href="https://www.amazon.com/dp/B0GR783N17" target="_blank" class="amz-buy-main">
+            <span>☞ Buy Kindle Edition on Amazon</span>
+            <span class="amz-buy-main-price">$9.99</span>
+          </a>
+          <a href="https://www.amazon.com/dp/B0GR783N17" target="_blank" class="amz-buy-paper">
+            <span>📖 Buy Paperback Edition</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:15px;">$39.99</span>
+          </a>
+        </div>
+        <p class="amz-fine">Instant delivery on Kindle · Free returns on Paperback · Secure checkout by Amazon</p>
+      </div>
+
+      <!-- Right: Edition card -->
+      <div class="amz-right reveal" style="transition-delay:.15s">
+        <div class="amz-card">
+          <div class="amz-card-header">
+            <span class="amz-card-tag">Choose your edition</span>
+            <span class="amz-ku-badge">KINDLE UNLIMITED</span>
+          </div>
+
+          <div class="amz-editions">
+            <a href="https://www.amazon.com/dp/B0GR783N17" target="_blank" class="amz-edition-row active">
+              <div class="amz-edition-left">
+                <span class="amz-edition-icon">📱</span>
+                <div>
+                  <span class="amz-edition-name">Kindle Edition</span>
+                  <span class="amz-edition-note">Instant · All devices · KU eligible</span>
+                </div>
+              </div>
+              <span class="amz-edition-price">$9.99</span>
+            </a>
+            <a href="https://www.amazon.com/dp/B0GR783N17" target="_blank" class="amz-edition-row">
+              <div class="amz-edition-left">
+                <span class="amz-edition-icon">📖</span>
+                <div>
+                  <span class="amz-edition-name">Paperback</span>
+                  <span class="amz-edition-note">Premium print · Ships worldwide</span>
+                </div>
+              </div>
+              <span class="amz-edition-price">$39.99</span>
+            </a>
+            <a href="mailto:nasreldin@ngbengineering.com" class="amz-edition-row">
+              <div class="amz-edition-left">
+                <span class="amz-edition-icon">🏢</span>
+                <div>
+                  <span class="amz-edition-name">Enterprise License</span>
+                  <span class="amz-edition-note">10+ copies · Workshop included</span>
+                </div>
+              </div>
+              <span class="amz-edition-price" style="font-size:13px;">Custom</span>
+            </a>
+          </div>
+
+          <a href="https://www.amazon.com/dp/B0GR783N17" target="_blank" class="amz-card-cta">
+            Buy on Amazon →
+          </a>
+          <p class="amz-card-note">🔒 Secure checkout · 30-day return policy</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ TESTIMONIALS ══ -->
+<section class="testi-section">
+  <div class="wrap">
+    <div class="sec-header reveal">
+      <span class="sec-kicker">Professional Endorsements</span>
+      <h2 class="sec-h2">What Industry Leaders Are Saying</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"Finally, a practitioner's guide that bridges the gap between BIM theory and AI implementation. The cost prediction framework alone is worth the price of admission — we've already applied it on three live projects."</p>
+        <div class="testi-rule"></div>
+        <div class="testi-name">Dr. Sarah Mitchell</div>
+        <div class="testi-role">Head of Digital Construction · Tier 1 Contractor, UK</div>
+      </div>
+      <div class="testi-card reveal" style="transition-delay:.1s">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"The EU AI Act compliance chapter is the most comprehensive treatment of this topic I have seen in any construction publication. Essential reading for any AEC firm operating in Europe."</p>
+        <div class="testi-rule"></div>
+        <div class="testi-name">Prof. Klaus Bergmann</div>
+        <div class="testi-role">Professor of Digital Engineering · TU Munich</div>
+      </div>
+      <div class="testi-card reveal" style="transition-delay:.2s">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"The federated learning chapter transformed how we think about data sharing across our consortium projects. Yousif has written the definitive guide for the next five years of construction technology."</p>
+        <div class="testi-rule"></div>
+        <div class="testi-name">Ahmed Al-Rashidi</div>
+        <div class="testi-role">Digital Transformation Director · Gulf Region</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PRICING ══ -->
+<section class="pricing-section" id="pricing">
+  <div class="wrap">
+    <div class="sec-header reveal">
+      <span class="sec-kicker">Editions & Pricing</span>
+      <h2 class="sec-h2">Choose Your Format</h2>
+    </div>
+    <div class="pricing-grid">
+      <div class="pricing-card reveal">
+        <div class="pricing-format">📱 Kindle Edition</div>
+        <div class="pricing-price"><span>$</span>9.99</div>
+        <p class="pricing-note">Instant download · All devices · Kindle Unlimited eligible</p>
+        <ul class="pricing-list">
+          <li>Full 211-page practitioner's guide</li>
+          <li>All Python code frameworks</li>
+          <li>519 case study references</li>
+          <li>Lifetime updates included</li>
+          <li>Kindle Unlimited eligible</li>
+        </ul>
+        <a href="https://www.amazon.com/dp/B0GR783N17" target="_blank" class="pricing-btn">Buy on Amazon →</a>
+      </div>
+      <div class="pricing-card featured reveal" style="transition-delay:.1s">
+        <div class="featured-label">MOST POPULAR</div>
+        <div class="pricing-format">📖 Paperback Edition</div>
+        <div class="pricing-price"><span>$</span>39.99</div>
+        <p class="pricing-note">Premium print · Ships worldwide · All Amazon marketplaces</p>
+        <ul class="pricing-list">
+          <li>Full 211-page practitioner's guide</li>
+          <li>All Python code frameworks</li>
+          <li>519 case study references</li>
+          <li>Premium lay-flat binding</li>
+          <li>Free Kindle digital copy</li>
+        </ul>
+        <a href="https://www.amazon.com/dp/B0GR783N17" target="_blank" class="pricing-btn">Buy on Amazon →</a>
+      </div>
+      <div class="pricing-card reveal" style="transition-delay:.2s">
+        <div class="pricing-format">🏢 Enterprise License</div>
+        <div class="pricing-price" style="font-size:26px;padding-top:6px;">Custom</div>
+        <p class="pricing-note">10+ copies · Workshop · Advisory support included</p>
+        <ul class="pricing-list">
+          <li>Team or organisation-wide licence</li>
+          <li>Custom onboarding workshop</li>
+          <li>ROI calculator for your portfolio</li>
+          <li>Dedicated author Q&A session</li>
+          <li>Volume pricing from $999</li>
+        </ul>
+        <a href="mailto:nasreldin@ngbengineering.com" class="pricing-btn">Request a Quote →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ AUTHOR ══ -->
+<section class="author-section" id="author">
+  <div class="wrap">
+    <div class="author-card reveal">
+      <div class="author-avatar">👷</div>
+      <div>
+        <p class="author-kicker">About the Author</p>
+        <h3 class="author-name">Nasreldin Yousif</h3>
+        <p class="author-role">Civil Engineer · BIM-AI Strategist · Founder, NGB Engineering Enterprises</p>
+        <p class="author-bio">
+          Nasreldin Adam Mohammed Yousif is a civil engineer, BIM coordinator, and digital transformation
+          strategist with over a decade of experience in large-scale infrastructure and building projects
+          across the Middle East and Africa. He is the founder of NGB Engineering Enterprises and a
+          specialist in applying AI-driven BIM workflows to complex construction programmes. His work
+          spans ISO 19650 implementation, machine learning for cost prediction, federated data
+          architectures, and carbon intelligence frameworks. This book is the distillation of ten years
+          of field-level work — not academic conjecture.
+        </p>
+        <div class="author-links">
+          <a href="https://www.linkedin.com/in/nasreldin-yousif" target="_blank" class="author-link">LinkedIn</a>
+          <a href="https://www.amazon.com/dp/B0GR783N17" target="_blank" class="author-link">Amazon</a>
+          <a href="mailto:nasreldin@ngbengineering.com" class="author-link">Contact</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FAQ ══ -->
+<section class="faq-section" id="faq">
+  <div class="wrap">
+    <div class="sec-header reveal">
+      <span class="sec-kicker">FAQ</span>
+      <h2 class="sec-h2">Common Questions</h2>
+    </div>
+    <div class="faq-grid reveal">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Who is this book written for?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><p>Project directors, BIM leads, quantity surveyors, digital transformation leaders, and senior engineers who need to act — not just understand. The book assumes engineering competency but not deep machine learning expertise.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Do I need Python or coding experience?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><p>The Python frameworks are provided as ready-to-use code. Basic familiarity with data helps, but the book explains every model and its logic in plain language. Non-technical readers can apply the frameworks through their data teams.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          How is this different from other BIM or AI books?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><p>Most books are either technically rigorous without financial grounding, or high-level strategy without implementation detail. This is the only book validated across 519 real deployments with audited financial outcomes, EU AI Act compliance guidance, and production-ready code.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Is the Kindle edition the same content as paperback?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><p>Yes — identical content. The Kindle edition is formatted for screen reading with hyperlinked references. The paperback uses lay-flat binding designed for desk reference. Both include all frameworks, code references, and case studies.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Can I get a corporate or team licence?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><p>Yes. Enterprise licences are available for teams of 10 or more, including a custom onboarding workshop, ROI calculator tailored to your portfolio, and a dedicated Q&A session with the author. Email nasreldin@ngbengineering.com for a quote.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER CTA ══ -->
+<section class="footer-cta-section">
+  <div class="wrap">
+    <h2 class="ftcta-h reveal">Ready to lead the<br><em>digital transformation</em> of your projects?</h2>
+    <p class="ftcta-sub reveal">Register now — Chapter 1 is free. No credit card required.</p>
+    <form class="ft-form reveal" onsubmit="submitForm(event,'ft-form','ft-ok')">
+      <input id="ft-email" type="email" class="email-in" placeholder="your@email.com" required>
+      <button type="submit" class="sub-btn">Send it →</button>
+    </form>
+    <div id="ft-ok" style="display:none;font-size:14px;color:var(--gold);margin-top:12px;">✓ You're registered — check your inbox.</div>
+    <p class="ft-note">Join 3,000+ practitioners already subscribed · No spam · Unsubscribe anytime</p>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="foot-inner">
+    <span class="foot-brand">BIM + AI: THE INTELLIGENT CONSTRUCTION ADVANTAGE</span>
+    <ul class="foot-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="mailto:nasreldin@ngbengineering.com">Contact</a></li>
+    </ul>
+    <span class="foot-copy">© 2026 Nasreldin Adam Mohammed Yousif</span>
+  </div>
+</footer>
+
+<!-- ══ AMAZON BOTTOM BAR ══ -->
+<div class="amz-bottom-bar" id="amz-bar">
+  <div class="amz-bar-inner">
+    <div class="amz-bar-info">
+      <div class="amz-bar-cover">BIM<br>+AI</div>
+      <div class="amz-bar-text">
+        <span class="amz-bar-title">BIM + AI: The Intelligent Construction Advantage</span>
+        <span class="amz-bar-sub">
+          <span class="amz-bar-stars">★★★★★</span>
+          &nbsp;Nasreldin Yousif · 211 Pages · Gold Standard Edition
+        </span>
+      </div>
+    </div>
+    <div class="amz-bar-actions">
+      <span class="amz-bar-price">$9.99</span>
+      <a href="https://www.amazon.com/dp/B0GR783N17" target="_blank" class="amz-bar-kindle">
+        ☞ Buy Kindle
+      </a>
+      <a href="https://www.amazon.com/dp/B0GR783N17" target="_blank" class="amz-bar-paper">
+        📖 Paperback $39.99
+      </a>
+      <button class="amz-bar-close" onclick="document.getElementById('amz-bar').classList.remove('visible');document.getElementById('amz-bar').style.display='none';" aria-label="Close">✕</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── Particles ── */
+(function(){
+  const c = document.getElementById('particles');
+  const ctx = c.getContext('2d');
+  let W, H, pts = [];
+
+  function resize(){ W = c.width = innerWidth; H = c.height = innerHeight; }
+  resize(); window.addEventListener('resize', resize);
+
+  for(let i=0;i<55;i++) pts.push({
+    x: Math.random()*1920, y: Math.random()*1080,
+    vx:(Math.random()-.5)*.18, vy:(Math.random()-.5)*.18,
+    r: Math.random()*1.4+0.4
+  });
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0||p.x>W) p.vx*=-1;
+      if(p.y<0||p.y>H) p.vy*=-1;
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle='rgba(196,154,0,0.5)';
+      ctx.fill();
+    });
+    pts.forEach((a,i)=>{
+      pts.slice(i+1).forEach(b=>{
+        const d=Math.hypot(a.x-b.x,a.y-b.y);
+        if(d<140){
+          ctx.beginPath();
+          ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y);
+          ctx.strokeStyle=`rgba(196,154,0,${0.1*(1-d/140)})`;
+          ctx.lineWidth=0.5;
+          ctx.stroke();
+        }
+      });
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ── Scroll progress + nav scroll + amazon bar ── */
+window.addEventListener('scroll', function(){
+  const bar = document.getElementById('progress-bar');
+  const nav = document.getElementById('navbar');
+  const amzBar = document.getElementById('amz-bar');
+  const pct = scrollY / (document.body.scrollHeight - innerHeight) * 100;
+  bar.style.width = pct + '%';
+  nav.classList.toggle('scrolled', scrollY > 40);
+  if(amzBar && amzBar.style.display !== 'none'){
+    amzBar.classList.toggle('visible', scrollY > 700);
+  }
+});
+
+/* ── Countdown ── */
+(function(){
+  // Early Bird ends May 15, 2026
+  const launch = new Date('2026-05-15T23:59:59').getTime();
+  const pad = n => n < 10 ? '0'+n : ''+n;
+  const els = {
+    d: document.getElementById('cd-d'),
+    h: document.getElementById('cd-h'),
+    m: document.getElementById('cd-m'),
+    s: document.getElementById('cd-s'),
+  };
+  function tick(){
+    const diff = launch - Date.now();
+    if(diff <= 0){ Object.values(els).forEach(e=>e.textContent='00'); return; }
+    els.d.textContent = pad(Math.floor(diff/86400000));
+    els.h.textContent = pad(Math.floor(diff%86400000/3600000));
+    els.m.textContent = pad(Math.floor(diff%3600000/60000));
+    const s = pad(Math.floor(diff%60000/1000));
+    const el = els.s;
+    el.textContent = s;
+    el.classList.remove('flash');
+    void el.offsetWidth;
+    el.classList.add('flash');
+  }
+  tick(); setInterval(tick,1000);
+})();
+
+/* ── Form submit ── */
+function submitForm(e, formId, okId){
+  e.preventDefault();
+  const btn = e.target.querySelector('button');
+  const origText = btn.textContent;
+  btn.textContent = 'Sending…'; btn.disabled = true;
+  setTimeout(()=>{
+    document.getElementById(formId).style.display = 'none';
+    const ok = document.getElementById(okId);
+    ok.style.display = 'block';
+    // TODO: POST to Klaviyo/Mailchimp API endpoint here
+    if(window.dataLayer) dataLayer.push({event:'lead_capture'});
+  }, 800);
+}
+
+/* ── Scroll reveal ── */
+(function(){
+  const io = new IntersectionObserver(entries=>{
+    entries.forEach(el=>{
+      if(el.isIntersecting){ el.target.classList.add('in'); io.unobserve(el.target); }
+    });
+  },{threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+})();
+
+/* ── Smooth scroll ── */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click', e=>{
+    const t = document.querySelector(a.getAttribute('href'));
+    if(t){ e.preventDefault(); t.scrollIntoView({behavior:'smooth',block:'start'}); }
+  });
+});
+
+/* ── Hamburger ── */
+function closeMenu(){
+  document.getElementById('hamburger').classList.remove('open');
+  document.getElementById('mobile-menu').classList.remove('open');
+}
+document.getElementById('hamburger').addEventListener('click', function(){
+  this.classList.toggle('open');
+  document.getElementById('mobile-menu').classList.toggle('open');
+});
+
+/* ── FAQ accordion ── */
+function toggleFaq(btn){
+  const item = btn.parentElement;
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i=>i.classList.remove('open'));
+  if(!isOpen) item.classList.add('open');
+}
+</script>
+</body>
+</html>
